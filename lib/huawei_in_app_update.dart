@@ -107,4 +107,32 @@ class UpgradeInfo {
     this.isAutoUpdate,
     this.notRcmReason,
   });
+
+  @override
+  String toString() => 'UpgradeInfo{'
+      'appId: $appId, '
+      'appName: $appName, '
+      'packageName: $packageName, '
+      'diffSize: $diffSize, '
+      'diffDownUrl: $diffDownUrl, '
+      'diffSha2: $diffSha2, '
+      'sameS: $sameS, '
+      'size: $size, '
+      'releaseDate: $releaseDate, '
+      'icon: $icon, '
+      'versionCode: $versionCode, '
+      'versionName: $versionName, '
+      'oldVersionCode: $oldVersionCode, '
+      'oldVersionName: $oldVersionName, '
+      'downUrl: $downUrl, '
+      'newFeatures: $newFeatures, '
+      'releaseDateDesc: $releaseDateDesc, '
+      'detailId: $detailId, '
+      'fullDownUrl: $fullDownUrl, '
+      'bundleSize: $bundleSize, '
+      'devType: $devType, '
+      'isCompulsoryUpdate: $isCompulsoryUpdate, '
+      'isAutoUpdate: $isAutoUpdate, '
+      'notRcmReason: $notRcmReason'
+      '}';
 }

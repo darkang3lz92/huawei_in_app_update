@@ -1,0 +1,24 @@
+name: huawei_in_app_update
+description: A flutter plugin to support Huawei In App Update.
+version: 0.0.1
+homepage: https://github.com/darkang3lz92/huawei_in_app_update
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+  flutter: ">=1.20.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+# The following section is specific to Flutter.
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.domago.huawei_in_app_update
+        pluginClass: HuaweiInAppUpdatePlugin

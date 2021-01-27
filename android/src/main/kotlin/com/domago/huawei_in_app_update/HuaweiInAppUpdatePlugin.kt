@@ -113,9 +113,15 @@ class HuaweiInAppUpdatePlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
 
                 if (info is ApkUpgradeInfo) {
 
+                    upgradeInfo = info
                     val successResult = hashMapOf(
                             "versionCode" to info.versionCode_,
-                            "versionName" to info.version_
+                            "versionName" to info.version_,
+                            "bundleSize" to info.bundleSize_,
+                            "devType" to info.devType_,
+                            "isAutoUpdate" to info.isAutoUpdate_,
+                            "oldVersionCode" to info.oldVersionCode_,
+                            "oldVersionName" to info.oldVersionName_
 
                     )
 

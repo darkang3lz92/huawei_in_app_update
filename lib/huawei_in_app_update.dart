@@ -11,10 +11,20 @@ class HuaweiInAppUpdate {
     return version;
   }
 
-  static Future<Map<String, dynamic>> checkForUpdate() async {
+  static Future<UpgradeInfo> checkForUpdate() async {
     try {
-      return await _channel
-          .invokeMethod<Map<String, dynamic>>('checkForUpdate');
+      final info = await _channel.invokeMethod('checkForUpdate');
+
+      print(info);
+      return UpgradeInfo(
+        versionCode: info["versionCode"],
+        versionName: info["versionName"],
+        bundleSize: info["bundleSize"],
+        devType: info["devType"],
+        isAutoUpdate: info["isAutoUpdate"],
+        oldVersionCode: info["oldVersionCode"],
+        oldVersionName: info["oldVersionName"],
+      );
     } on PlatformException catch (e) {
       throw e;
     }
@@ -27,4 +37,24 @@ class HuaweiInAppUpdate {
       throw e;
     }
   }
+}
+
+class UpgradeInfo {
+  final int versionCode;
+  final String versionName;
+  final int oldVersionCode;
+  final String oldVersionName;
+  final int devType;
+  final int bundleSize;
+  final bool isAutoUpdate;
+
+  UpgradeInfo({
+    this.versionCode,
+    this.versionName,
+    this.oldVersionCode,
+    this.oldVersionName,
+    this.devType,
+    this.bundleSize,
+    this.isAutoUpdate,
+  });
 }

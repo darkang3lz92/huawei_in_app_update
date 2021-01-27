@@ -29,4 +29,3 @@ void checkForUpdate() async {
 ```
 
 If you would like to have a different app update presentation in your app, you may try to create your own custom widget design using the information provided from `UpgradeInfo`.
-

@@ -15,7 +15,6 @@ class HuaweiInAppUpdate {
     try {
       final info = await _channel.invokeMethod('checkForUpdate');
 
-      print(info);
       return UpgradeInfo(
         appId: info['appId'],
         appName: info['appName'],

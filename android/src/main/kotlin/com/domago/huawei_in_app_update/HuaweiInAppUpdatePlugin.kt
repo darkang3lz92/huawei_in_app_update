@@ -115,13 +115,30 @@ class HuaweiInAppUpdatePlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
 
                     upgradeInfo = info
                     val successResult = hashMapOf(
-                            "versionCode" to info.versionCode_,
+                            "appId" to info.id_,
+                            "appName" to info.name_,
+                            "packageName" to info.package_,
                             "versionName" to info.version_,
+                            "diffSize" to info.diffSize_,
+                            "diffDownUrl" to info.diffDownUrl_,
+                            "diffSha2" to info.diffSha2_,
+                            "sameS" to info.sameS_,
+                            "size" to info.longSize_,
+                            "releaseDate" to info.releaseDate_,
+                            "icon" to info.icon_,
+                            "oldVersionCode" to info.oldVersionCode_,
+                            "versionCode" to info.versionCode_,
+                            "downurl" to info.downurl_,
+                            "newFeatures" to info.newFeatures_,
+                            "releaseDateDesc" to info.releaseDateDesc_,
+                            "detailId" to info.detailId_,
+                            "fullDownUrl" to info.fullDownUrl_,
                             "bundleSize" to info.bundleSize_,
                             "devType" to info.devType_,
                             "isAutoUpdate" to info.isAutoUpdate_,
-                            "oldVersionCode" to info.oldVersionCode_,
-                            "oldVersionName" to info.oldVersionName_
+                            "oldVersionName" to info.oldVersionName_,
+                            "isCompulsoryUpdate" to info.isCompulsoryUpdate_,
+                            "notRcmReason" to info.notRcmReason_
 
                     )
 
@@ -130,15 +147,15 @@ class HuaweiInAppUpdatePlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
             }
 
             override fun onMarketInstallInfo(intent: Intent?) {
-                TODO("Not yet implemented")
+                // Reserved method. No handling is required.
             }
 
-            override fun onMarketStoreError(intent: Int) {
-                TODO("Not yet implemented")
+            override fun onMarketStoreError(responseCode: Int) {
+                // Reserved method. No handling is required.
             }
 
-            override fun onUpdateStoreError(p0: Int) {
-                TODO("Not yet implemented")
+            override fun onUpdateStoreError(responseCode: Int) {
+                // Reserved method. No handling is required.
             }
 
         })

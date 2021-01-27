@@ -16,6 +16,7 @@ class HuaweiInAppUpdate {
       final info = await _channel.invokeMethod('checkForUpdate');
 
       return UpgradeInfo(
+        true,
         appId: info['appId'],
         appName: info['appName'],
         packageName: info['packageName'],
@@ -42,6 +43,10 @@ class HuaweiInAppUpdate {
         notRcmReason: info['notRcmReason'],
       );
     } on PlatformException catch (e) {
+      if (e.code == 'NO_UPGRADE_INFO') {
+        return UpgradeInfo(false);
+      }
+
       throw e;
     }
   }
@@ -56,6 +61,7 @@ class HuaweiInAppUpdate {
 }
 
 class UpgradeInfo {
+  final bool updateAvailable;
   final String appId;
   final String appName;
   final String packageName;
@@ -81,7 +87,8 @@ class UpgradeInfo {
   final bool isAutoUpdate;
   final int notRcmReason;
 
-  UpgradeInfo({
+  UpgradeInfo(
+    this.updateAvailable, {
     this.appId,
     this.appName,
     this.packageName,

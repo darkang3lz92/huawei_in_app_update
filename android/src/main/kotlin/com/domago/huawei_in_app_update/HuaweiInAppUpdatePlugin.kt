@@ -8,6 +8,7 @@ import com.huawei.hms.jos.JosApps
 import com.huawei.updatesdk.service.appmgr.bean.ApkUpgradeInfo
 import com.huawei.updatesdk.service.otaupdate.CheckUpdateCallBack
 import com.huawei.updatesdk.service.otaupdate.UpdateKey
+import com.huawei.updatesdk.service.otaupdate.UpdateStatusCode
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -106,43 +107,70 @@ class HuaweiInAppUpdatePlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
                 }
 
                 val status = intent.getIntExtra(UpdateKey.STATUS, -1)
-                val failCode = intent.getIntExtra(UpdateKey.FAIL_CODE, -1)
 
-                val failReason = intent.getStringExtra(UpdateKey.FAIL_REASON)
-                val info = intent.getSerializableExtra(UpdateKey.INFO)
+                if (status == UpdateStatusCode.HAS_UPGRADE_INFO) {
+                    val info = intent.getSerializableExtra(UpdateKey.INFO)
 
-                if (info is ApkUpgradeInfo) {
+                    if (info is ApkUpgradeInfo) {
 
-                    upgradeInfo = info
-                    val successResult = hashMapOf(
-                            "appId" to info.id_,
-                            "appName" to info.name_,
-                            "packageName" to info.package_,
-                            "versionName" to info.version_,
-                            "diffSize" to info.diffSize_,
-                            "diffDownUrl" to info.diffDownUrl_,
-                            "diffSha2" to info.diffSha2_,
-                            "sameS" to info.sameS_,
-                            "size" to info.longSize_,
-                            "releaseDate" to info.releaseDate_,
-                            "icon" to info.icon_,
-                            "oldVersionCode" to info.oldVersionCode_,
-                            "versionCode" to info.versionCode_,
-                            "downurl" to info.downurl_,
-                            "newFeatures" to info.newFeatures_,
-                            "releaseDateDesc" to info.releaseDateDesc_,
-                            "detailId" to info.detailId_,
-                            "fullDownUrl" to info.fullDownUrl_,
-                            "bundleSize" to info.bundleSize_,
-                            "devType" to info.devType_,
-                            "isAutoUpdate" to info.isAutoUpdate_,
-                            "oldVersionName" to info.oldVersionName_,
-                            "isCompulsoryUpdate" to info.isCompulsoryUpdate_,
-                            "notRcmReason" to info.notRcmReason_
+                        upgradeInfo = info
+                        val successResult = hashMapOf(
+                                "appId" to info.id_,
+                                "appName" to info.name_,
+                                "packageName" to info.package_,
+                                "versionName" to info.version_,
+                                "diffSize" to info.diffSize_,
+                                "diffDownUrl" to info.diffDownUrl_,
+                                "diffSha2" to info.diffSha2_,
+                                "sameS" to info.sameS_,
+                                "size" to info.longSize_,
+                                "releaseDate" to info.releaseDate_,
+                                "icon" to info.icon_,
+                                "oldVersionCode" to info.oldVersionCode_,
+                                "versionCode" to info.versionCode_,
+                                "downurl" to info.downurl_,
+                                "newFeatures" to info.newFeatures_,
+                                "releaseDateDesc" to info.releaseDateDesc_,
+                                "detailId" to info.detailId_,
+                                "fullDownUrl" to info.fullDownUrl_,
+                                "bundleSize" to info.bundleSize_,
+                                "devType" to info.devType_,
+                                "isAutoUpdate" to info.isAutoUpdate_,
+                                "oldVersionName" to info.oldVersionName_,
+                                "isCompulsoryUpdate" to info.isCompulsoryUpdate_,
+                                "notRcmReason" to info.notRcmReason_
 
-                    )
+                        )
 
-                    result.success(successResult)
+                        result.success(successResult)
+                    }
+                }
+                else if (status == UpdateStatusCode.PARAMER_ERROR) {
+                    result.error("PARAMETER_ERROR", "Parameter is incorrect", null)
+                }
+                else if (status == UpdateStatusCode.CONNECT_ERROR) {
+                    result.error("CONNECT_ERROR", "Network connection is incorrect", null)
+                }
+                else if (status == UpdateStatusCode.NO_UPGRADE_INFO) {
+                    result.error("NO_UPGRADE_INFO", "No update is available", null)
+                }
+                else if (status == UpdateStatusCode.CANCEL) {
+                    result.error("CANCEL", "User cancels the update", null)
+                }
+                else if (status == UpdateStatusCode.INSTALL_FAILED) {
+                    result.error("INSTALL_FAILED", "App update fails", null)
+                }
+                else if (status == UpdateStatusCode.CHECK_FAILED) {
+                    result.error("CHECK_FAILED", "Update information fails to be queried", null)
+                }
+                else if (status == UpdateStatusCode.MARKET_FORBID) {
+                    result.error("MARKET_FORBID", "HUAWEI AppGallery is disabled", null)
+                }
+                else if (status == UpdateStatusCode.IN_MARKET_UPDATING) {
+                    result.error("IN_MARKET_UPDATING", "App is being updated", null)
+                }
+                else {
+                    result.error("UNKNOWN_STATUS", "Status unknown", null)
                 }
             }
 

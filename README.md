@@ -1,15 +1,32 @@
 # huawei_in_app_update
 
-A new flutter plugin project.
+This flutter plugin project use official [Huawei App Update API](https://developer.huawei.com/consumer/en/doc/development/AppGallery-connect-Guides/appgallerykit-app-update) to check update from AppGallery. Please note that this plugin for Android use only.
 
-## Getting Started
+## Prerequisite
+You must add the [AppGallery Connect configuration file of your app](https://developer.huawei.com/consumer/en/doc/development/AppGallery-connect-Guides/appgallerykit-preparation#addconfig) to your project before you run it.
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Usage
+
+Calling `HuaweiInAppUpdate.checkForUpdate()` will return `UpgradeInfo`. You may use `upgradeInfo.updateAvailable` to check if there is an update available. If update is available, you may show a update dialog using `HuaweiInAppUpdate.showUpdateDialog()`.
+
+```dart
+void checkForUpdate() async {
+    if (Platform.isAndroid) {
+        try {
+            final upgradeInfo = await HuaweiInAppUpdate.checkForUpdate();
+            if (upgradeInfo.updateAvailable) {
+                HuaweiInAppUpdate.showUpdateDialog();
+            }
+        } on PlatformException catch (e) {
+            showErrorDialog(e.code, e.message);
+        }
+    } else {
+        showErrorDialog('IOS_NOT_SUPPORTED', 'iOS device is not supported');
+    }
+}
+
+```
+
+If you would like to have a different app update presentation in your app, you may try to create your own custom widget design using the information provided from `UpgradeInfo`.
 

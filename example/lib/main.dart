@@ -1,3 +1,4 @@
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,35 +14,42 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   void initState() {
     super.initState();
   }
 
   void checkForUpdate() async {
-    try {
-      final upgradeInfo = await HuaweiInAppUpdate.checkForUpdate();
-      if (upgradeInfo.updateAvailable) {
-        HuaweiInAppUpdate.showUpdateDialog();
+    if (Platform.isAndroid) {
+      try {
+        final upgradeInfo = await HuaweiInAppUpdate.checkForUpdate();
+        if (upgradeInfo.updateAvailable) {
+          HuaweiInAppUpdate.showUpdateDialog();
+        }
+      } on PlatformException catch (e) {
+        showErrorDialog(e.code, e.message);
       }
-    } on PlatformException catch (e) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(e.code),
-            content: Text(e.message),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+    } else {
+      showErrorDialog('IOS_NOT_SUPPORTED', 'iOS device is not supported');
     }
+  }
+
+  void showErrorDialog(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override

@@ -21,7 +21,7 @@ class _MyAppState extends State<MyApp> {
 
   void checkForUpdate() async {
     try {
-      final upgradeInfo = await HuaweiInAppUpdate.checkForUpdate;
+      final upgradeInfo = await HuaweiInAppUpdate.checkForUpdate();
       if (upgradeInfo.updateAvailable) {
         HuaweiInAppUpdate.showUpdateDialog();
       }

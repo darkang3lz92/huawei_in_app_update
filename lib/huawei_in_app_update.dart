@@ -6,7 +6,7 @@ class HuaweiInAppUpdate {
   static const MethodChannel _channel =
       const MethodChannel('huawei_in_app_update');
 
-  static Future<UpgradeInfo> get checkForUpdate async {
+  static Future<UpgradeInfo> checkForUpdate() async {
     try {
       final info = await _channel.invokeMethod('checkForUpdate');
 

@@ -20,7 +20,7 @@ void main() {
   });
 
   test('checkForUpdate', () async {
-    final info = await HuaweiInAppUpdate.checkForUpdate;
+    final info = await HuaweiInAppUpdate.checkForUpdate();
     expect(info.updateAvailable, true);
     expect(info.appId, '1234');
   });

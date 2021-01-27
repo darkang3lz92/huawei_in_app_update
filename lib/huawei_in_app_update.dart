@@ -117,7 +117,7 @@ class UpgradeInfo {
 
   @override
   String toString() => 'UpgradeInfo{'
-      'updateAvailable: $updateAvailable'
+      'updateAvailable: $updateAvailable, '
       'appId: $appId, '
       'appName: $appName, '
       'packageName: $packageName, '

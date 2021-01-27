@@ -6,12 +6,7 @@ class HuaweiInAppUpdate {
   static const MethodChannel _channel =
       const MethodChannel('huawei_in_app_update');
 
-  static Future<String> get platformVersion async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
-  }
-
-  static Future<UpgradeInfo> checkForUpdate() async {
+  static Future<UpgradeInfo> get checkForUpdate async {
     try {
       final info = await _channel.invokeMethod('checkForUpdate');
 

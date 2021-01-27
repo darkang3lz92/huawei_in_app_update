@@ -9,7 +9,9 @@ void main() {
 
   setUp(() {
     channel.setMockMethodCallHandler((MethodCall methodCall) async {
-      return '42';
+      if (methodCall.method == 'checkForUpdate') {
+        return {'appId': "1234"};
+      }
     });
   });
 
@@ -17,7 +19,9 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
-  test('getPlatformVersion', () async {
-    expect(await HuaweiInAppUpdate.platformVersion, '42');
+  test('checkForUpdate', () async {
+    final info = await HuaweiInAppUpdate.checkForUpdate;
+    expect(info.updateAvailable, true);
+    expect(info.appId, '1234');
   });
 }

@@ -75,19 +75,9 @@ class HuaweiInAppUpdatePlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
-            "getPlatformVersion" -> result.success("Android ${android.os.Build.VERSION.RELEASE}")
             "checkForUpdate" -> checkForUpdate(result)
             "showUpdateDialog" -> showUpdateDialog(call, result)
         }
-
-
-//        if (call.method == "getPlatformVersion") {
-//            result.success("Android ${android.os.Build.VERSION.RELEASE}")
-//        } else if (call.method == "checkForUpdate") {
-//
-//        } else {
-//            result.notImplemented()
-//        }
     }
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {

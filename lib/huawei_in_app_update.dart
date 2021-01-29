@@ -253,49 +253,59 @@ class UpdateDialog extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 clipBehavior: Clip.hardEdge,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 28.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const SizedBox(height: 20.0),
-                      Text(
-                        'New Version',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 28.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const SizedBox(height: 20.0),
+                          Text(
+                            'New Version',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 20.0),
+                          _buildTextRow(
+                            'App',
+                            info?.appName,
+                          ),
+                          _buildTextRow(
+                            'Version',
+                            info?.versionName,
+                          ),
+                          _buildTextRow(
+                            'Size',
+                            (info?.bundleSize ?? info?.size)?.formatBytes(),
+                          ),
+                          const SizedBox(height: 20.0),
+                          Text(
+                            'Details',
+                            style: TextStyle(
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          Text(
+                            info?.newFeatures,
+                            style: TextStyle(
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          const SizedBox(height: 20.0),
+                          _buildButtons(context)
+                        ],
                       ),
-                      const SizedBox(height: 20.0),
-                      _buildTextRow(
-                        'App',
-                        info?.appName,
-                      ),
-                      _buildTextRow(
-                        'Version',
-                        info?.versionName,
-                      ),
-                      _buildTextRow(
-                        'Size',
-                        (info?.bundleSize ?? info?.size)?.formatBytes(),
-                      ),
-                      const SizedBox(height: 20.0),
-                      Text(
-                        'Details',
-                        style: TextStyle(
-                          fontSize: 14.0,
-                        ),
-                      ),
-                      Text(
-                        info?.newFeatures,
-                        style: TextStyle(
-                          fontSize: 14.0,
-                        ),
-                      ),
-                      const SizedBox(height: 20.0),
-                      _buildButtons(context)
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 20.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: _buildButtons(context),
+                    ),
+                  ],
                 ),
               ),
             ),

@@ -60,9 +60,10 @@ class HuaweiInAppUpdate {
     }
   }
 
-  /// Display a update dialog provided by Huawei API.
-  ///
-  /// Throws a [PlatformException] if error occured.
+  /// Display a update dialog.
+  /// 
+  /// If force is true, dialog will not dismissible
+  /// with back button or background.
   static void showUpdateDialog({
     @required BuildContext context,
     bool force = false,

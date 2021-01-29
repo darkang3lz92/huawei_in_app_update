@@ -1,6 +1,6 @@
 ## [Unreleased]
 
-
+- Update documentation.
 
 ## [0.2.0] - 2021-01-30
 

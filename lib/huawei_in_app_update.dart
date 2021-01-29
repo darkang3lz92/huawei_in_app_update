@@ -87,8 +87,8 @@ class UpgradeInfo {
 
   final String diffSha2;
 
-  /// Indicates whether the signature is different. 
-  /// 
+  /// Indicates whether the signature is different.
+  ///
   /// The options are as follows:
   /// - **0**: no
   /// - **1**: yes
@@ -132,8 +132,8 @@ class UpgradeInfo {
 
   final int bundleSize;
 
-  /// Indicates whether the app is a Huawei-developed app. 
-  /// 
+  /// Indicates whether the app is a Huawei-developed app.
+  ///
   /// The options are as follows:
   /// - **0**: no
   /// - **1**: yes

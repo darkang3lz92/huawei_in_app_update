@@ -20,7 +20,6 @@ import io.flutter.plugin.common.PluginRegistry
 
 
 interface ActivityProvider {
-    fun addActivityResultListener(callback: PluginRegistry.ActivityResultListener)
     fun activity(): Activity?
 }
 
@@ -43,10 +42,6 @@ class HuaweiInAppUpdatePlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         activityProvider = object : ActivityProvider {
-            override fun addActivityResultListener(callback: PluginRegistry.ActivityResultListener) {
-                TODO("Not yet implemented")
-            }
-
             override fun activity(): Activity {
                 return binding.activity
             }
@@ -63,10 +58,6 @@ class HuaweiInAppUpdatePlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
         activityProvider = object : ActivityProvider {
-            override fun addActivityResultListener(callback: PluginRegistry.ActivityResultListener) {
-                TODO("Not yet implemented")
-            }
-
             override fun activity(): Activity {
                 return binding.activity
             }
@@ -77,6 +68,7 @@ class HuaweiInAppUpdatePlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
         when (call.method) {
             "checkForUpdate" -> checkForUpdate(result)
             "showUpdateDialog" -> showUpdateDialog(call, result)
+            else -> result.notImplemented()
         }
     }
 
@@ -134,32 +126,26 @@ class HuaweiInAppUpdatePlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
 
                         result.success(successResult)
                     }
-                }
-                else if (status == UpdateStatusCode.PARAMER_ERROR) {
+                    else {
+                        result.error("NO_UPGRADE_INFO", "No update is available", null)
+                    }
+                } else if (status == UpdateStatusCode.PARAMER_ERROR) {
                     result.error("PARAMETER_ERROR", "Parameter is incorrect", null)
-                }
-                else if (status == UpdateStatusCode.CONNECT_ERROR) {
+                } else if (status == UpdateStatusCode.CONNECT_ERROR) {
                     result.error("CONNECT_ERROR", "Network connection is incorrect", null)
-                }
-                else if (status == UpdateStatusCode.NO_UPGRADE_INFO) {
+                } else if (status == UpdateStatusCode.NO_UPGRADE_INFO) {
                     result.error("NO_UPGRADE_INFO", "No update is available", null)
-                }
-                else if (status == UpdateStatusCode.CANCEL) {
+                } else if (status == UpdateStatusCode.CANCEL) {
                     result.error("CANCEL", "User cancels the update", null)
-                }
-                else if (status == UpdateStatusCode.INSTALL_FAILED) {
+                } else if (status == UpdateStatusCode.INSTALL_FAILED) {
                     result.error("INSTALL_FAILED", "App update fails", null)
-                }
-                else if (status == UpdateStatusCode.CHECK_FAILED) {
+                } else if (status == UpdateStatusCode.CHECK_FAILED) {
                     result.error("CHECK_FAILED", "Update information fails to be queried", null)
-                }
-                else if (status == UpdateStatusCode.MARKET_FORBID) {
+                } else if (status == UpdateStatusCode.MARKET_FORBID) {
                     result.error("MARKET_FORBID", "HUAWEI AppGallery is disabled", null)
-                }
-                else if (status == UpdateStatusCode.IN_MARKET_UPDATING) {
+                } else if (status == UpdateStatusCode.IN_MARKET_UPDATING) {
                     result.error("IN_MARKET_UPDATING", "App is being updated", null)
-                }
-                else {
+                } else {
                     result.error("UNKNOWN_STATUS", "Status unknown", null)
                 }
             }

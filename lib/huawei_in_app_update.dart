@@ -23,8 +23,7 @@ class HuaweiInAppUpdate {
   static Future<UpgradeInfo> checkForUpdate() async {
     try {
       final info = await _channel.invokeMethod('checkForUpdate');
-
-      return UpgradeInfo(
+      _upgradeInfo = UpgradeInfo(
         true,
         appId: info['appId'],
         appName: info['appName'],
@@ -51,6 +50,7 @@ class HuaweiInAppUpdate {
         isCompulsoryUpdate: info['isCompulsoryUpdate'] == 1,
         notRcmReason: info['notRcmReason'],
       );
+      return _upgradeInfo;
     } on PlatformException catch (e) {
       if (e.code == 'NO_UPGRADE_INFO') {
         return UpgradeInfo(false);
@@ -66,21 +66,17 @@ class HuaweiInAppUpdate {
   static void showUpdateDialog({
     @required BuildContext context,
     bool force = false,
+    bool useRootNavigator = false,
   }) async {
     await showDialog(
       context: context,
+      useRootNavigator: useRootNavigator,
       builder: (context) => UpdateDialog(
         info: _upgradeInfo,
         forceUpdate: force,
       ),
       barrierDismissible: !force,
     );
-
-    // try {
-    //   await _channel.invokeMethod('showUpdateDialog');
-    // } on PlatformException catch (e) {
-    //   throw e;
-    // }
   }
 }
 
@@ -223,7 +219,11 @@ class UpgradeInfo {
 }
 
 class UpdateDialog extends StatelessWidget {
+  /// Upgrade Info
   final UpgradeInfo info;
+
+  /// Decide whether to force update.
+  /// If this is true, dialog will not calling Navigator.pop
   final bool forceUpdate;
 
   UpdateDialog({
@@ -242,17 +242,31 @@ class UpdateDialog extends StatelessWidget {
         children: [
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 4.0,
+                vertical: 20.0,
+              ),
               child: Material(
+                elevation: 3.0,
                 color: Theme.of(context).dialogBackgroundColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 clipBehavior: Clip.hardEdge,
                 child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 28.0),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text('New Version'),
+                      const SizedBox(height: 20.0),
+                      Text(
+                        'New Version',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 20.0),
                       _buildTextRow(
                         'App',
                         info?.appName,
@@ -263,10 +277,22 @@ class UpdateDialog extends StatelessWidget {
                       ),
                       _buildTextRow(
                         'Size',
-                        info?.size?.formatBytes(),
+                        (info?.bundleSize ?? info?.size)?.formatBytes(),
                       ),
-                      Text('Details'),
-                      Text(info?.newFeatures),
+                      const SizedBox(height: 20.0),
+                      Text(
+                        'Details',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                        ),
+                      ),
+                      Text(
+                        info?.newFeatures,
+                        style: TextStyle(
+                          fontSize: 14.0,
+                        ),
+                      ),
+                      const SizedBox(height: 20.0),
                       _buildButtons(context)
                     ],
                   ),
@@ -280,28 +306,44 @@ class UpdateDialog extends StatelessWidget {
   }
 
   Widget _buildButtons(BuildContext context) {
-    var buttonsRow = [];
+    final buttonStyle = ButtonStyle(
+      textStyle: MaterialStateProperty.resolveWith<TextStyle>(
+        (_) => TextStyle(
+          fontSize: 15.0,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+
+    var buttonsRow = <Widget>[];
 
     if (!forceUpdate) {
       buttonsRow.add(
         Expanded(
           child: TextButton(
+            style: buttonStyle,
             onPressed: () => Navigator.of(context).pop(),
             child: Text('LATER'),
           ),
         ),
       );
 
-      buttonsRow.add(VerticalDivider());
+      buttonsRow.add(
+        VerticalDivider(
+          indent: 12.0,
+          endIndent: 12.0,
+          thickness: 1.0,
+        ),
+      );
     }
     buttonsRow.add(
       Expanded(
         child: TextButton(
+          style: buttonStyle,
           onPressed: () async {
-            if (info?.appId != null && info?.appName != null) {
+            if (info?.appId != null && info?.packageName != null) {
               final appGalleryDeeplink =
-                  'appmarket://details?id=${info?.appName}';
-
+                  'appmarket://details?id=${info?.packageName}';
               if (await canLaunch(appGalleryDeeplink)) {
                 await launch(appGalleryDeeplink);
               } else {
@@ -312,23 +354,44 @@ class UpdateDialog extends StatelessWidget {
                 }
               }
             }
+
+            if (!forceUpdate) {
+              Navigator.of(context).pop();
+            }
           },
           child: Text('UPDATE'),
         ),
       ),
     );
 
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      children: buttonsRow,
+    return IntrinsicHeight(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4.0),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: buttonsRow,
+        ),
+      ),
     );
   }
 
   Widget _buildTextRow(String title, String description) {
     return Row(
       children: [
-        Text(title),
-        Text(description),
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 14.0,
+          ),
+        ),
+        const SizedBox(width: 8.0),
+        Text(
+          description,
+          style: TextStyle(
+            fontSize: 14.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ],
     );
   }

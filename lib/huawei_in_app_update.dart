@@ -338,6 +338,7 @@ class UpdateDialog extends StatelessWidget {
 
       buttonsRow.add(
         VerticalDivider(
+          width: 20.0,
           indent: 12.0,
           endIndent: 12.0,
           thickness: 1.0,

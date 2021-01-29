@@ -1,10 +1,15 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:huawei_in_app_update/src/formatter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HuaweiInAppUpdate {
   static const MethodChannel _channel =
       const MethodChannel('huawei_in_app_update');
+
+  static UpgradeInfo _upgradeInfo;
 
   /// Initiate to check for update from Huawei Server
   /// and retrieve App Update information
@@ -58,12 +63,24 @@ class HuaweiInAppUpdate {
   /// Display a update dialog provided by Huawei API.
   ///
   /// Throws a [PlatformException] if error occured.
-  static void showUpdateDialog() async {
-    try {
-      await _channel.invokeMethod('showUpdateDialog');
-    } on PlatformException catch (e) {
-      throw e;
-    }
+  static void showUpdateDialog({
+    @required BuildContext context,
+    bool force = false,
+  }) async {
+    await showDialog(
+      context: context,
+      builder: (context) => UpdateDialog(
+        info: _upgradeInfo,
+        forceUpdate: force,
+      ),
+      barrierDismissible: !force,
+    );
+
+    // try {
+    //   await _channel.invokeMethod('showUpdateDialog');
+    // } on PlatformException catch (e) {
+    //   throw e;
+    // }
   }
 }
 
@@ -203,4 +220,116 @@ class UpgradeInfo {
       'isAutoUpdate: $isAutoUpdate, '
       'notRcmReason: $notRcmReason'
       '}';
+}
+
+class UpdateDialog extends StatelessWidget {
+  final UpgradeInfo info;
+  final bool forceUpdate;
+
+  UpdateDialog({
+    @required this.info,
+    this.forceUpdate = false,
+  }) : assert(info != null);
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async => forceUpdate ? false : Navigator.canPop(context),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: Material(
+                color: Theme.of(context).dialogBackgroundColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                clipBehavior: Clip.hardEdge,
+                child: Container(
+                  child: Column(
+                    children: [
+                      Text('New Version'),
+                      _buildTextRow(
+                        'App',
+                        info?.appName,
+                      ),
+                      _buildTextRow(
+                        'Version',
+                        info?.versionName,
+                      ),
+                      _buildTextRow(
+                        'Size',
+                        info?.size?.formatBytes(),
+                      ),
+                      Text('Details'),
+                      Text(info?.newFeatures),
+                      _buildButtons(context)
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildButtons(BuildContext context) {
+    var buttonsRow = [];
+
+    if (!forceUpdate) {
+      buttonsRow.add(
+        Expanded(
+          child: TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('LATER'),
+          ),
+        ),
+      );
+
+      buttonsRow.add(VerticalDivider());
+    }
+    buttonsRow.add(
+      Expanded(
+        child: TextButton(
+          onPressed: () async {
+            if (info?.appId != null && info?.appName != null) {
+              final appGalleryDeeplink =
+                  'appmarket://details?id=${info?.appName}';
+
+              if (await canLaunch(appGalleryDeeplink)) {
+                await launch(appGalleryDeeplink);
+              } else {
+                final appGalleryUrl =
+                    'https://appgallery.huawei.com/#/app/${info.appId}';
+                if (await canLaunch(appGalleryUrl)) {
+                  await launch(appGalleryUrl);
+                }
+              }
+            }
+          },
+          child: Text('UPDATE'),
+        ),
+      ),
+    );
+
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      children: buttonsRow,
+    );
+  }
+
+  Widget _buildTextRow(String title, String description) {
+    return Row(
+      children: [
+        Text(title),
+        Text(description),
+      ],
+    );
+  }
 }

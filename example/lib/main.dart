@@ -24,7 +24,10 @@ class _MyAppState extends State<MyApp> {
       try {
         final upgradeInfo = await HuaweiInAppUpdate.checkForUpdate();
         if (upgradeInfo.updateAvailable) {
-          HuaweiInAppUpdate.showUpdateDialog();
+          HuaweiInAppUpdate.showUpdateDialog(
+            context: context,
+            force: false,
+          );
         }
       } on PlatformException catch (e) {
         showErrorDialog(e.code, e.message);

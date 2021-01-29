@@ -295,8 +295,6 @@ class UpdateDialog extends StatelessWidget {
                               fontSize: 14.0,
                             ),
                           ),
-                          const SizedBox(height: 20.0),
-                          _buildButtons(context)
                         ],
                       ),
                     ),

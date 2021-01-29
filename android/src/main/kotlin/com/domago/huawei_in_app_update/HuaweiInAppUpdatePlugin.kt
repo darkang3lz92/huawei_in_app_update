@@ -67,7 +67,6 @@ class HuaweiInAppUpdatePlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
             "checkForUpdate" -> checkForUpdate(result)
-            "showUpdateDialog" -> showUpdateDialog(call, result)
             else -> result.notImplemented()
         }
     }
@@ -164,16 +163,4 @@ class HuaweiInAppUpdatePlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
 
         })
     }
-
-    private fun showUpdateDialog(@NonNull call: MethodCall, @NonNull result: Result) {
-        requireNotNull(client) {
-            result.error("REQUIRE_CHECK_FOR_UPDATE", "Require calling check for update first", null)
-        }
-        requireNotNull(upgradeInfo) {
-            result.error("NO_UPDATE_AVAILABLE", "No update info available", null)
-        }
-
-        client?.showUpdateDialog(activityProvider?.activity(), upgradeInfo, false)
-    }
-
 }

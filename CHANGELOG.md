@@ -1,7 +1,7 @@
 
 ## [Unreleased]
 
-
+- Fix static analysis with code formatting.
 
 ## [0.1.0+1] - 2021-01-29
 

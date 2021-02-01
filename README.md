@@ -8,23 +8,26 @@ You must add the [AppGallery Connect configuration file of your app](https://dev
 
 ## Usage
 
-Calling `HuaweiInAppUpdate.checkForUpdate()` will return `UpgradeInfo`. You may use `upgradeInfo.updateAvailable` to check if there is an update available. If update is available, you may show a update dialog using `HuaweiInAppUpdate.showUpdateDialog()`.
+Calling `HuaweiInAppUpdate.checkForUpdate()` will return `UpgradeInfo`. You may use `upgradeInfo.updateAvailable` to check if there is an update available. If update is available, you may show a update dialog using `HuaweiInAppUpdate.showUpdateDialog()`. If force specify as true, dialog will not dismissable and back button will not pop the dialog.
 
 ```dart
 void checkForUpdate() async {
     if (Platform.isAndroid) {
-        try {
-            final upgradeInfo = await HuaweiInAppUpdate.checkForUpdate();
-            if (upgradeInfo.updateAvailable) {
-                HuaweiInAppUpdate.showUpdateDialog();
-            }
-        } on PlatformException catch (e) {
-            showErrorDialog(e.code, e.message);
+      try {
+        final upgradeInfo = await HuaweiInAppUpdate.checkForUpdate();
+        if (upgradeInfo.updateAvailable) {
+          HuaweiInAppUpdate.showUpdateDialog(
+            context: context,
+            force: false,
+          );
         }
+      } on PlatformException catch (e) {
+        showErrorDialog(e.code, e.message);
+      }
     } else {
-        showErrorDialog('IOS_NOT_SUPPORTED', 'iOS device is not supported');
+      showErrorDialog('IOS_NOT_SUPPORTED', 'iOS device is not supported');
     }
-}
+  }
 
 ```
 

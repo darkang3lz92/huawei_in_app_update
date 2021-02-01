@@ -8,7 +8,7 @@ You must add the [AppGallery Connect configuration file of your app](https://dev
 
 ## Usage
 
-Calling `HuaweiInAppUpdate.checkForUpdate()` will return `UpgradeInfo`. You may use `upgradeInfo.updateAvailable` to check if there is an update available. If update is available, you may show a update dialog using `HuaweiInAppUpdate.showUpdateDialog()`. If force specify as true, dialog will not dismissable and back button will not pop the dialog.
+Calling `HuaweiInAppUpdate.checkForUpdate()` will return `UpgradeInfo`. You may use `upgradeInfo.updateAvailable` to check if there is an update available. If update is available, you may show a update dialog using `HuaweiInAppUpdate.showUpdateDialog()`. If `force` specify as `true`, dialog will not dismissable and back button will not pop the dialog.
 
 ```dart
 void checkForUpdate() async {

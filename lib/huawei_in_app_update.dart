@@ -61,7 +61,7 @@ class HuaweiInAppUpdate {
   }
 
   /// Display a update dialog.
-  /// 
+  ///
   /// If force is true, dialog will not dismissible
   /// with back button or background.
   static void showUpdateDialog({

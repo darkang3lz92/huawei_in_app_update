@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+- Reduce url launcher requirement
+
 ## [1.0.0] - 2021-03-11
 
 - Migrate to null-safety.

@@ -6,14 +6,14 @@ repository: https://github.com/darkang3lz92/huawei_in_app_update
 issue_tracker: https://github.com/darkang3lz92/huawei_in_app_update/issues
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
   flutter: ">=1.20.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  url_launcher: ^5.7.10
+  url_launcher: ^6.0.2
 
 dev_dependencies:
   flutter_test:

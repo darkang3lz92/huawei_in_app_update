@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [1.0.0+1] - 2021-03-11
+
 - Reduce url launcher requirement
 
 ## [1.0.0] - 2021-03-11

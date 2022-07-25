@@ -14,6 +14,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final _navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   void initState() {
     super.initState();
@@ -27,6 +29,24 @@ class _MyAppState extends State<MyApp> {
           HuaweiInAppUpdate.showUpdateDialog(
             context: context,
             force: false,
+          );
+        } else {
+          final context = _navigatorKey.currentState.context;
+          await showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                content: Text('No new update available'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Okay'),
+                  ),
+                ],
+              );
+            },
           );
         }
       } on PlatformException catch (e) {
@@ -58,6 +78,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: _navigatorKey,
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Huawei App Update Plugin'),

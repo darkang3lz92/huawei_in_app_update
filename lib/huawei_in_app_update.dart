@@ -353,14 +353,16 @@ class UpdateDialog extends StatelessWidget {
           onPressed: () async {
             if (info.appId != null && info.packageName != null) {
               final appGalleryDeeplink =
-                  'appmarket://details?id=${info.packageName}';
-              if (await canLaunch(appGalleryDeeplink)) {
-                await launch(appGalleryDeeplink);
+                  Uri.tryParse('appmarket://details?id=${info.packageName}');
+              if (appGalleryDeeplink != null &&
+                  await canLaunchUrl(appGalleryDeeplink)) {
+                await launchUrl(appGalleryDeeplink);
               } else {
-                final appGalleryUrl =
-                    'https://appgallery.huawei.com/#/app/${info.appId}';
-                if (await canLaunch(appGalleryUrl)) {
-                  await launch(appGalleryUrl);
+                final appGalleryUrl = Uri.tryParse(
+                    'https://appgallery.huawei.com/#/app/${info.appId}');
+                if (appGalleryUrl != null &&
+                    await canLaunchUrl(appGalleryUrl)) {
+                  await launchUrl(appGalleryUrl);
                 }
               }
             }

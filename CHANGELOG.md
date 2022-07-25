@@ -1,5 +1,11 @@
 ## [Unreleased]
 
+## [1.1.0+1] - 2022-07-25
+
+- fix deprecated url launcher usage.
+
+## [1.1.0] - 2022-07-25
+
 - **BREAKING CHANGE**: bump minSdkVersion from 16 to 19.
 - **BREAKING CHANGE**: bump targetSdkVersion from 29 to 31.
 - bump appservice library to `com.huawei.hms:appservice:6.1.0.301`.

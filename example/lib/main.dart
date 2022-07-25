@@ -31,23 +31,26 @@ class _MyAppState extends State<MyApp> {
             force: false,
           );
         } else {
-          final context = _navigatorKey.currentState.context;
-          await showDialog(
-            context: context,
-            builder: (_) {
-              return AlertDialog(
-                content: Text('No new update available'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Okay'),
-                  ),
-                ],
-              );
-            },
-          );
+          final context = _navigatorKey.currentState?.context;
+
+          if (context != null) {
+            await showDialog(
+              context: context,
+              builder: (_) {
+                return AlertDialog(
+                  content: Text('No new update available'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Okay'),
+                    ),
+                  ],
+                );
+              },
+            );
+          }
         }
       } on PlatformException catch (e) {
         showErrorDialog(e.code, e.message);
@@ -57,13 +60,13 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  void showErrorDialog(String title, String message) {
+  void showErrorDialog(String title, String? message) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Text(title),
-          content: Text(message),
+          content: Text(message ?? 'Error'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),

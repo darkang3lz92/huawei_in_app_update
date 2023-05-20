@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [1.2.0] - 2023-05-20
+
 - added `Error Details` in Platform exception
 - bump AGP and gradle version
 - bump appservice library to `com.huawei.hms:appservice:6.10.0.300`

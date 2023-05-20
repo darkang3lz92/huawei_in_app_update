@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+- added `Error Details` in Platform exception
+- bump AGP and gradle version
+- bump appservice library to `com.huawei.hms:appservice:6.10.0.300`
+- bump kotlin version
+
 ## [1.1.0+1] - 2022-07-25
 
 - fix deprecated url launcher usage.

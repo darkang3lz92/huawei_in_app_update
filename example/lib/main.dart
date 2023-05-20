@@ -22,6 +22,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void checkForUpdate() async {
+    final context = _navigatorKey.currentState?.context ?? this.context;
     if (Platform.isAndroid) {
       try {
         final upgradeInfo = await HuaweiInAppUpdate.checkForUpdate();
@@ -31,26 +32,22 @@ class _MyAppState extends State<MyApp> {
             force: false,
           );
         } else {
-          final context = _navigatorKey.currentState?.context;
-
-          if (context != null) {
-            await showDialog(
-              context: context,
-              builder: (_) {
-                return AlertDialog(
-                  content: Text('No new update available'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('Okay'),
-                    ),
-                  ],
-                );
-              },
-            );
-          }
+          await showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                content: Text('No new update available'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Okay'),
+                  ),
+                ],
+              );
+            },
+          );
         }
       } on PlatformException catch (e) {
         showErrorDialog(e.code, e.message);
@@ -61,6 +58,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void showErrorDialog(String title, String? message) {
+    final context = _navigatorKey.currentState?.context ?? this.context;
     showDialog(
       context: context,
       builder: (context) {

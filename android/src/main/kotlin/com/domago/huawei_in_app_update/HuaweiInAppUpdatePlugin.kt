@@ -93,10 +93,10 @@ class HuaweiInAppUpdatePlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
                 val status = intent.getIntExtra(UpdateKey.STATUS, DEFAULT_CODE)
 
                 // error reference: https://developer.huawei.com/consumer/en/doc/development/HMSCore-References/appupdateclient-0000001050123641#section15712187193218
-                val errorDetails = ErrorDetails(
-                    code = intent.getIntExtra(UpdateKey.FAIL_CODE, DEFAULT_CODE),
-                    reason = intent.getStringExtra(UpdateKey.FAIL_REASON)
-                ).asMap()
+                val errorDetails = mapOf<String, Any?>(
+                    "code" to intent.getIntExtra(UpdateKey.FAIL_CODE, DEFAULT_CODE),
+                    "reason" to intent.getStringExtra(UpdateKey.FAIL_REASON),
+                )
 
                 if (status == UpdateStatusCode.HAS_UPGRADE_INFO) {
 

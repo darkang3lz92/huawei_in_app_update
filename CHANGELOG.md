@@ -1,5 +1,8 @@
 ## [Unreleased]
 
+- remove unnecessary kotlin class
+- remove kotlin reflection
+
 ## [1.2.0] - 2023-05-20
 
 - added `Error Details` in Platform exception

@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+
+
+## [1.2.1] - 2023-08-30
+
 - remove unnecessary kotlin class
 - remove kotlin reflection
 

@@ -1,12 +1,12 @@
 name: huawei_in_app_update
 description: Unofficial flutter plugin for accessing Huawei App Update Official API.
-version: 1.2.0
+version: 1.2.1
 homepage: https://github.com/darkang3lz92/huawei_in_app_update
 repository: https://github.com/darkang3lz92/huawei_in_app_update
 issue_tracker: https://github.com/darkang3lz92/huawei_in_app_update/issues
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.12.0 <4.0.0"
   flutter: ">=1.20.0"
 
 dependencies:

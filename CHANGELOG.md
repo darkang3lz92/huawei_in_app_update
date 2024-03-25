@@ -1,5 +1,6 @@
 ## [Unreleased]
 
+- java 8 compatibility.
 - added namespace for gradle 8 support.
 
 ## [1.2.1] - 2023-08-30

@@ -36,6 +36,8 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
+
+    namespace "com.domago.huawei_in_app_update"
 }
 
 dependencies {
